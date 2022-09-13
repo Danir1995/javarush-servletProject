@@ -9,7 +9,7 @@ import java.util.List;
 public class User {
     private String userName;
     private List<String> items = new ArrayList<>();
-
+    private int attempts;
     public void addItems(String item){
         items.add(item);
     }

@@ -21,8 +21,10 @@ public class StartServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
+
         ServletContext servletContext = config.getServletContext();
-        userRepository = new UserRepository();
+
+        userRepository = (UserRepository) servletContext.getAttribute("userRepository");
     }
 
     @Override
@@ -31,24 +33,33 @@ public class StartServlet extends HttpServlet {
         String username = request.getParameter("username");
 
         HttpSession session = request.getSession();
-        if (session.getAttribute("user") != null) {
-            resp.sendRedirect("start.jsp");
-            return;
-        }
+
+        Integer count = (Integer) session.getAttribute("count");
 
         User user;
 
         if (userRepository.isExists(username)) {
+
             user = userRepository.fetchByUsername(username);
+
+            user.setAttempts(user.getAttempts()+1);
+
+            session.setAttribute("count", user.getAttempts());
         } else {
 
+            session.setAttribute("count", 1);
+
             user = new User();
+
+            user.setAttempts(1);
 
             user.setUserName(username);
 
             userRepository.save(user);
         }
-        session.setAttribute("username", user.getUserName());
+
+        session.setAttribute("user", user.getUserName());
+
         resp.sendRedirect("start.jsp");
     }
 }

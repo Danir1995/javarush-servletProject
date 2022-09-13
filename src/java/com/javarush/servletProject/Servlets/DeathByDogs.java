@@ -22,8 +22,8 @@ public class DeathByDogs extends HttpServlet {
         printWriter.println("<p><IMG class=\"displayed\" src = \"https://st3.depositphotos.com/1695244/32109/i/600/depositphotos_321091354-stock-photo-trio-black-anubis-hounds-hellhound.jpg\" width = \"400\" height = \"256\">\n</p>");
         printWriter.println("<p>YOU LOSE<p>");
         printWriter.println("<p>START AGAIN?</p>");
-        printWriter.println("<p>user name is " + session.getAttribute("username") + "</p>");
-        printWriter.println("<button class=\"btnBack\" onclick=\"window.location='index.jsp'\">YES</button>\n");
+        printWriter.println("<p>User name is " + session.getAttribute("user") + "Number of attempts: " + session.getAttribute("count") + "</p>");
+        printWriter.println("<button class=\"btn\" onclick=\"window.location='./index.jsp'\">YES</button>\n");
         printWriter.println("</html>");
     }
 }
