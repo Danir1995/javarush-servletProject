@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(name = "Medicine", value = "/takeMedicine")
-public class TakeMedicineServlet extends HttpServlet {
+@WebServlet(name = "Items", value = "/takeItem")
+public class TakeItemsServlet extends HttpServlet {
     private UserRepository userRepository = null;
 
     @Override
@@ -28,18 +28,24 @@ public class TakeMedicineServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         HttpSession session = req.getSession();
-
+        String item = req.getParameter("item");
         User user = (User) session.getAttribute("user");
 
         if (userRepository.isExists(user.getUserName())) {
             user = userRepository.fetchByUsername(user.getUserName());
-            user.addItems("medicine");
+            user.addItems(item);
         } else {
             throw new RuntimeException("user doesn't exist.");
         }
-
-        resp.sendRedirect("deathByDogs.jsp");
-
+        if (item.equals("medicine")) {
+            resp.sendRedirect("shop.jsp");
+        }else if (item.equals("gun")){
+            resp.sendRedirect("deathByDogs.jsp");
+        }
+        switch (item){
+            case "medicine": resp.sendRedirect("shop.jsp");
+            case "gun": resp.sendRedirect("/street");
+        }
 
     }
 }
